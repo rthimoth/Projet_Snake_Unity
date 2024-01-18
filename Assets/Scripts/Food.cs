@@ -48,6 +48,7 @@ public class Food : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         RandomizePosition();
+        GameManager.Instance.currentScore += 1f;
     }
 
 }

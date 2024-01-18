@@ -22,22 +22,25 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
-        // Only allow turning up or down while moving in the x-axis
-        if (direction.x != 0f)
+        if (GameManager.Instance.isPlaying)
         {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                input = Vector2Int.up;
-            } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                input = Vector2Int.down;
+            // Only allow turning up or down while moving in the x-axis
+            if (direction.x != 0f)
+            {
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+                    input = Vector2Int.up;
+                } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+                    input = Vector2Int.down;
+                }
             }
-        }
-        // Only allow turning left or right while moving in the y-axis
-        else if (direction.y != 0f)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                input = Vector2Int.right;
-            } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                input = Vector2Int.left;
+            // Only allow turning left or right while moving in the y-axis
+            else if (direction.y != 0f)
+            {
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+                    input = Vector2Int.right;
+                } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+                    input = Vector2Int.left;
+                }
             }
         }
     }
@@ -120,6 +123,7 @@ public class Snake : MonoBehaviour
         else if (other.gameObject.CompareTag("Obstacle"))
         {
             ResetState();
+            GameManager.Instance.GameOver();
         }
         else if (other.gameObject.CompareTag("Wall"))
         {

@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "unity-snake-tutorial.sln"
+    "dotnet.defaultSolution": "unity-snake-tutorial.sln",
+    "dotnet.preferCSharpExtension": true
 }
