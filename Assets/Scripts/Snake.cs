@@ -14,13 +14,15 @@ public class Snake : MonoBehaviour
     private List<Transform> segments = new List<Transform>();
     private Vector2Int input;
     private float nextUpdate;
+    private int HP = 0;
     public bool isReverseControlActive = false; // Set this to true when the reverse control bonus is activated
 
     private void Start()
     {
         ResetState();
         gm = GameManager.Instance;
-        gm.onEventReverseControle.AddListener(ActiveReverseControle);
+        gm.onReverseControl.AddListener(ActiveReverseControle);
+        gm.onExtraLife.AddListener(AddExtraLife);
     }
 
     private void Update()
@@ -113,10 +115,21 @@ public class Snake : MonoBehaviour
         {
             Grow();
         }
-        else if (other.gameObject.CompareTag("Obstacle"))
+        else if (other.gameObject.CompareTag("Obstacle") || other.gameObject.CompareTag("Player"))
         {
-            ResetState();
-            gm.GameOver();
+           if (HP > 0)
+           {
+               HP -= 1;
+           }
+           else
+           {
+               Death();
+           }
+        }
+        else if (other.gameObject.CompareTag("HP"))
+        {
+            gm.onExtraLife.Invoke();
+            Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("Wall"))
         {
@@ -126,6 +139,11 @@ public class Snake : MonoBehaviour
                 ResetState();
             }
         }
+    }
+    private void Death()
+    {
+        ResetState();
+        gm.GameOver();
     }
 
     private void Traverse(Transform wall)
@@ -191,4 +209,9 @@ public class Snake : MonoBehaviour
     {
         isReverseControlActive = true;
     }
+    public void AddExtraLife()
+    {
+        HP += 1;
+    }
+    
 }

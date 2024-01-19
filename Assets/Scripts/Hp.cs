@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class Food : MonoBehaviour
+public class Hp : MonoBehaviour
 {
     public Collider2D gridArea;
-
+    public GameObject hp;
+    GameManager gm;
     private Snake snake;
 
     private void Awake()
     {
         snake = FindObjectOfType<Snake>();
     }
-
     private void Start()
     {
-        RandomizePosition();
-
+        gm = GameManager.Instance;
+        gm.onExtraLife.AddListener(InstantiateHp);
     }
 
-    public void RandomizePosition()
+    public Vector2 RandomizePosition()
     {
         Bounds bounds = gridArea.bounds;
 
@@ -43,13 +43,11 @@ public class Food : MonoBehaviour
             }
         }
 
-        transform.position = new Vector2(x, y);
+        return new Vector2(x, y);
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
+    public void InstantiateHp()
     {
-        RandomizePosition();
-        GameManager.Instance.currentScore += 100f;
+        Instantiate(hp, RandomizePosition(), Quaternion.identity);
     }
 
 }

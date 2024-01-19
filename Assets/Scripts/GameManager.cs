@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
     public int minEvent = 1;
     public int maxEvent = 20000;
     public UnityEvent onPlay = new UnityEvent();
-    public UnityEvent onEventReverseControle = new UnityEvent();
+    public UnityEvent onReverseControl = new UnityEvent();
+    public UnityEvent onExtraLife = new UnityEvent();
 
     public void StartGame()
     {
@@ -62,7 +63,11 @@ public class GameManager : MonoBehaviour
     {
         if (UnityEngine.Random.Range(minEvent, maxEvent) == 1)
         {
-            onEventReverseControle.Invoke();
+            onReverseControl.Invoke();
+        }
+        if (UnityEngine.Random.Range(minEvent, maxEvent) == 2)
+        {
+            onExtraLife.Invoke();
         }
     }
 
