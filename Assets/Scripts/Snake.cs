@@ -122,6 +122,7 @@ public class Snake : MonoBehaviour
         if (other.gameObject.CompareTag("Food"))
         {
             Grow();
+            gm.currentScore += 1;
             Destroy(other.gameObject);
             spawner.InstantiateObject(spawner.prefabElements[0]);
         }

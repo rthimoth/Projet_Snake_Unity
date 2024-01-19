@@ -56,8 +56,6 @@ public class GameManager : MonoBehaviour
     {
         if (isPlaying)
         {
-            currentScore += Time.deltaTime;
-            // onReverseControl.Invoke();
             GenerateEvent();
         }
     }
