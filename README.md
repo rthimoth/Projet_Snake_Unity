@@ -45,6 +45,7 @@ Ce projet est une implémentation du jeu classique "Snake" développé sur Unity
 
 ### Contrôles Inversés
 - **Description** : Inverse temporairement les commandes de contrôle.
+- **Bonus** : +1 Bonus de point quand pomme mangé durant cette event
 
 ## Auteur
 Rthimoth & Fyleeds
