@@ -10,6 +10,8 @@ public class Spawner : MonoBehaviour
     GameManager gm;
     private float delay = 8f;
     private Snake snake;
+    public LayerMask obstacle_layer;
+    Vector2 boxSize = new Vector2(4, 4);
     private void Awake()
     {
         if (Instance == null)
@@ -45,7 +47,7 @@ public class Spawner : MonoBehaviour
         int y = Mathf.RoundToInt(Random.Range(bounds.min.y, bounds.max.y));
 
         // Prevent the food from spawning on the snake
-        while (snake.Occupies(x, y))
+        while (snake.Occupies(x, y) && Physics2D.OverlapBox(new Vector2(x,y), boxSize, 0, obstacle_layer))
         {
             x++;
 

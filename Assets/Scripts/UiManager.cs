@@ -5,13 +5,15 @@ using TMPro;
 public class UiManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreUI;
-
+    [SerializeField] private TextMeshProUGUI HP_UI;
     [SerializeField] private List<TextMeshProUGUI> uiElements; // List of UI elements
     private GameManager gm;
+    private Snake snk;
 
     private void Start()
     {
         gm = GameManager.Instance;
+        snk = Snake.Instance;
         SetListeners();
         SetActiveUIElements(uiElements,false);
 
@@ -30,6 +32,7 @@ public class UiManager : MonoBehaviour
     private void OnGUI()
     {
         scoreUI.text = gm.FormatScore();
+        HP_UI.text = "HP: " + snk.HP.ToString();
     }
     public void ShowText(TextMeshProUGUI uiElement)
     {

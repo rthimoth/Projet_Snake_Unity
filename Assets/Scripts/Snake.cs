@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Snake : MonoBehaviour
 {
+    public static Snake Instance { get; private set; } // Singleton instance
     public Transform segmentPrefab;
     public Vector2Int direction = Vector2Int.right;
     public float speed = 20f;
@@ -15,18 +16,28 @@ public class Snake : MonoBehaviour
     private List<Transform> segments = new List<Transform>();
     private Vector2Int input;
     private float nextUpdate;
-    private int HP = 0;
+    public int HP = 1;
     private float time_reverse_control = 0;
     private float timeEvent = 10f;
     public bool isReverseControlActive = false; // Set this to true when the reverse control bonus is activated
-
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); 
+        }
+    }
+    
     private void Start()
     {
         ResetState();
         gm = GameManager.Instance; 
         spawner = Spawner.Instance; 
         gm.onReverseControl.AddListener(ActiveReverseControle);
-        
     }
 
     private void Update()
@@ -123,6 +134,10 @@ public class Snake : MonoBehaviour
         {
             Grow();
             gm.currentScore += 1;
+            if (isReverseControlActive)
+            {
+                gm.currentScore += 1;
+            }
             Destroy(other.gameObject);
             spawner.InstantiateObject(spawner.prefabElements[0]);
         }
@@ -130,7 +145,7 @@ public class Snake : MonoBehaviour
         {
             HP -= 1;
             // Debug.Log("HP DEATH : " + HP + "");
-            if (HP < 0)
+            if (HP < 1)
             {
                 Death();
             }
