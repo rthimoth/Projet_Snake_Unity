@@ -16,6 +16,8 @@ public class Snake : MonoBehaviour
     private Vector2Int input;
     private float nextUpdate;
     private int HP = 0;
+    private float time_reverse_control = 0;
+    private float timeEvent = 10f;
     public bool isReverseControlActive = false; // Set this to true when the reverse control bonus is activated
 
     private void Start()
@@ -24,6 +26,7 @@ public class Snake : MonoBehaviour
         gm = GameManager.Instance; 
         spawner = Spawner.Instance; 
         gm.onReverseControl.AddListener(ActiveReverseControle);
+        
     }
 
     private void Update()
@@ -32,11 +35,15 @@ public class Snake : MonoBehaviour
         {
             if (isReverseControlActive)
             {
-                ReverseControl(5f);
+                time_reverse_control += Time.deltaTime;
+                // Debug.Log("time IS EVENT : + " + time + "");
+                ReverseControl();
+                // Debug.Log("ReverseControl IS AFTER : + " + isReverseControlActive + "");
             }
             else
             {
                 NormalControle();
+                // Debug.Log("time IS normal : + " + time + "");
             }
         }
     }
@@ -118,30 +125,25 @@ public class Snake : MonoBehaviour
             Destroy(other.gameObject);
             spawner.InstantiateObject(spawner.prefabElements[0]);
         }
-        else if (other.gameObject.CompareTag("Obstacle") || other.gameObject.CompareTag("Player"))
+        else if (other.gameObject.CompareTag("Obstacle") || other.gameObject.CompareTag("Player") || (other.gameObject.CompareTag("Wall") && moveThroughWalls == false))
         {
-           if (HP > 0)
-           {
-               HP -= 1;
-           }
-           else
-           {
-               Death();
-           }
+            HP -= 1;
+            // Debug.Log("HP DEATH : " + HP + "");
+            if (HP < 0)
+            {
+                Death();
+            }
+
         }
         else if (other.gameObject.CompareTag("HP"))
         {
             HP += 1;
-            Debug.Log("HP ADDED : " + HP + "");
+            // Debug.Log("HP : " + HP + "");
             Destroy(other.gameObject);
         }
-        else if (other.gameObject.CompareTag("Wall"))
+        else if (other.gameObject.CompareTag("Wall") && moveThroughWalls)
         {
-            if (moveThroughWalls) {
-                Traverse(other.transform);
-            } else {
-                ResetState();
-            }
+            Traverse(other.transform);
         }
     }
     private void Death()
@@ -163,33 +165,32 @@ public class Snake : MonoBehaviour
         transform.position = position;
     }
     
-    public void ReverseControl(float timeEvent)
+    public void ReverseControl()
     {
-        Debug.Log("ReverseControl ACTIVATED");
-        Debug.Log("timeEvent : " + timeEvent + "");
-        float time = 0;
-        while (time < timeEvent){
-            Debug.Log("ReverseControl RUNING");
-            if (direction.x != 0f)
-            {
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                    input = Vector2Int.down; // Reversed
-                } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                    input = Vector2Int.up; // Reversed
-                }
+        
+        if (direction.x != 0f)
+        {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+                input = Vector2Int.down; // Reversed
+            } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+                input = Vector2Int.up; // Reversed
             }
-            else if (direction.y != 0f)
-            {
-                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                    input = Vector2Int.left; // Reversed
-                } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                    input = Vector2Int.right; // Reversed
-                }
-            }
-            time += Time.deltaTime;
         }
-        isReverseControlActive = false;
+        else if (direction.y != 0f)
+        {
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+                input = Vector2Int.left; // Reversed
+            } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+                input = Vector2Int.right; // Reversed
+            }
+        }
 
+        if (time_reverse_control >= timeEvent)
+        {
+            // Debug.Log("ReverseControl IS BEFORE "+ isReverseControlActive + "");
+            isReverseControlActive = false;
+            time_reverse_control = 0;
+        }
     }
 
     public void NormalControle()
@@ -216,5 +217,4 @@ public class Snake : MonoBehaviour
     {
         isReverseControlActive = true;
     }
-    
 }

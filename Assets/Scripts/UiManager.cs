@@ -33,7 +33,7 @@ public class UiManager : MonoBehaviour
     }
     public void ShowText(TextMeshProUGUI uiElement)
     {
-        StartCoroutine(ShowAndHide(uiElement, 5f)); // 5 seconds
+        StartCoroutine(ShowAndHide(uiElement, 8f));
     }
 
     IEnumerator ShowAndHide(TextMeshProUGUI uiElement, float delay)

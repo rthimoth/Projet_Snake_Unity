@@ -390,7 +390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentScore: 0
   isPlaying: 0
-  minEvent: 1
+  minEvent: 0
   maxEvent: 20000
   onPlay:
     m_PersistentCalls:

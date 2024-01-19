@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     public float currentScore = 0f;
     public bool isPlaying = false;
-    public int minEvent = 1;
+    public int minEvent = 0;
     public int maxEvent = 20000;
     public UnityEvent onPlay = new UnityEvent();
     public UnityEvent onReverseControl = new UnityEvent();
@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         onPlay.Invoke();
+        
         isPlaying = true;
         SceneManager.LoadScene("Snake");
     }
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
         if (isPlaying)
         {
             currentScore += Time.deltaTime;
+            // onReverseControl.Invoke();
             GenerateEvent();
         }
     }
