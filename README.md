@@ -34,9 +34,17 @@ Ce projet est une implémentation du jeu classique "Snake" développé sur Unity
 - Le joueur peut ramasser la pomme pour agrandir son serpent
 - 3 niveaux différents avec des obstacles différents
 - Pièges qui tue le joueur (Au moins 2)
-- Deux évènements aléatoires : ... , ...
+- Deux évènements aléatoires : Vie Supplémentaire , Contrôles Inversés
 - Ecran de démarrage avec: Jouer, Options, Quitter
 - Ecran de score quand le joueur meurt et pendant la partie
+
+## Événements Aléatoires
+
+### Vie Supplémentaire
+- **Description** : Accorde au joueur une vie supplémentaire.
+
+### Contrôles Inversés
+- **Description** : Inverse temporairement les commandes de contrôle.
 
 ## Auteur
 Rthimoth & Fyleeds
