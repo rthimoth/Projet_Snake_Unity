@@ -11,6 +11,7 @@ public class Snake : MonoBehaviour
     public int initialSize = 4;
     public bool moveThroughWalls = false;
     GameManager gm;
+    Spawner spawner;
     private List<Transform> segments = new List<Transform>();
     private Vector2Int input;
     private float nextUpdate;
@@ -20,9 +21,9 @@ public class Snake : MonoBehaviour
     private void Start()
     {
         ResetState();
-        gm = GameManager.Instance;
+        gm = GameManager.Instance; 
+        spawner = Spawner.Instance; 
         gm.onReverseControl.AddListener(ActiveReverseControle);
-        gm.onExtraLife.AddListener(AddExtraLife);
     }
 
     private void Update()
@@ -31,7 +32,7 @@ public class Snake : MonoBehaviour
         {
             if (isReverseControlActive)
             {
-                ReverseControle(5f);
+                ReverseControl(5f);
             }
             else
             {
@@ -114,6 +115,8 @@ public class Snake : MonoBehaviour
         if (other.gameObject.CompareTag("Food"))
         {
             Grow();
+            Destroy(other.gameObject);
+            spawner.InstantiateObject(spawner.prefabElements[0]);
         }
         else if (other.gameObject.CompareTag("Obstacle") || other.gameObject.CompareTag("Player"))
         {
@@ -128,7 +131,8 @@ public class Snake : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("HP"))
         {
-            gm.onExtraLife.Invoke();
+            HP += 1;
+            Debug.Log("HP ADDED : " + HP + "");
             Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("Wall"))
@@ -159,10 +163,13 @@ public class Snake : MonoBehaviour
         transform.position = position;
     }
     
-    public void ReverseControle(float timeEvent)
+    public void ReverseControl(float timeEvent)
     {
+        Debug.Log("ReverseControl ACTIVATED");
+        Debug.Log("timeEvent : " + timeEvent + "");
         float time = 0;
         while (time < timeEvent){
+            Debug.Log("ReverseControl RUNING");
             if (direction.x != 0f)
             {
                 if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
@@ -208,10 +215,6 @@ public class Snake : MonoBehaviour
     public void ActiveReverseControle()
     {
         isReverseControlActive = true;
-    }
-    public void AddExtraLife()
-    {
-        HP += 1;
     }
     
 }
