@@ -40,6 +40,3 @@ Ce projet est une implémentation du jeu classique "Snake" développé sur Unity
 
 ## Auteur
 Rthimoth & Fyleeds
-
-## Licence
-Ce projet est sous licence [nom de la licence], voir le fichier LICENSE pour plus de détails.
