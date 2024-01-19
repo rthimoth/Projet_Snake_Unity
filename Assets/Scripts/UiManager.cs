@@ -10,7 +10,7 @@ public class UiManager : MonoBehaviour
     private void Start()
     {
         gm = GameManager.Instance; 
-        gm.onEvent.AddListener(ShowText);
+        gm.onEventReverseControle.AddListener(ShowText);
         eventUI.gameObject.SetActive(false);
     }
     private void OnGUI()

@@ -29,9 +29,9 @@ public class GameManager : MonoBehaviour
     public float currentScore = 0f;
     public bool isPlaying = false;
     public int minEvent = 1;
-    public int maxEvent = 10000;
+    public int maxEvent = 20000;
     public UnityEvent onPlay = new UnityEvent();
-    public UnityEvent onEvent = new UnityEvent();
+    public UnityEvent onEventReverseControle = new UnityEvent();
 
     public void StartGame()
     {
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     {
         if (UnityEngine.Random.Range(minEvent, maxEvent) == 1)
         {
-            onEvent.Invoke();
+            onEventReverseControle.Invoke();
         }
     }
 

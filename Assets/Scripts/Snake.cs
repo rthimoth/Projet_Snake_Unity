@@ -10,37 +10,30 @@ public class Snake : MonoBehaviour
     public float speedMultiplier = 1f;
     public int initialSize = 4;
     public bool moveThroughWalls = false;
-
+    GameManager gm;
     private List<Transform> segments = new List<Transform>();
     private Vector2Int input;
     private float nextUpdate;
+    public bool isReverseControlActive = false; // Set this to true when the reverse control bonus is activated
 
     private void Start()
     {
         ResetState();
+        gm = GameManager.Instance;
+        gm.onEventReverseControle.AddListener(ActiveReverseControle);
     }
 
     private void Update()
     {
-        if (GameManager.Instance.isPlaying)
+        if (gm.isPlaying)
         {
-            // Only allow turning up or down while moving in the x-axis
-            if (direction.x != 0f)
+            if (isReverseControlActive)
             {
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                    input = Vector2Int.up;
-                } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                    input = Vector2Int.down;
-                }
+                ReverseControle(5f);
             }
-            // Only allow turning left or right while moving in the y-axis
-            else if (direction.y != 0f)
+            else
             {
-                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                    input = Vector2Int.right;
-                } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                    input = Vector2Int.left;
-                }
+                NormalControle();
             }
         }
     }
@@ -123,7 +116,7 @@ public class Snake : MonoBehaviour
         else if (other.gameObject.CompareTag("Obstacle"))
         {
             ResetState();
-            GameManager.Instance.GameOver();
+            gm.GameOver();
         }
         else if (other.gameObject.CompareTag("Wall"))
         {
@@ -148,5 +141,54 @@ public class Snake : MonoBehaviour
         transform.position = position;
     }
     
-    
+    public void ReverseControle(float timeEvent)
+    {
+        float time = 0;
+        while (time < timeEvent){
+            if (direction.x != 0f)
+            {
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+                    input = Vector2Int.down; // Reversed
+                } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+                    input = Vector2Int.up; // Reversed
+                }
+            }
+            else if (direction.y != 0f)
+            {
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+                    input = Vector2Int.left; // Reversed
+                } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+                    input = Vector2Int.right; // Reversed
+                }
+            }
+            time += Time.deltaTime;
+        }
+        isReverseControlActive = false;
+
+    }
+
+    public void NormalControle()
+    {
+        if (direction.x != 0f)
+        {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+                input = Vector2Int.up;
+            } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+                input = Vector2Int.down;
+            }
+        }
+        // Only allow turning left or right while moving in the y-axis
+        else if (direction.y != 0f)
+        {
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+                input = Vector2Int.right;
+            } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+                input = Vector2Int.left;
+            }
+        }
+    }
+    public void ActiveReverseControle()
+    {
+        isReverseControlActive = true;
+    }
 }
