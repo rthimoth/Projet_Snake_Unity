@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayGameButton : MonoBehaviour
+public class OptionsGameButton : MonoBehaviour
 {
-    public void OnPlayButtonClicked()
+    public void OnOptionButtonClicked()
         {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.StartGame();
+            GameManager.Instance.LoadOptionMenu();
         }
         else
         {
