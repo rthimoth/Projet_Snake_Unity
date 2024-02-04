@@ -48,4 +48,4 @@ Ce projet est une implémentation du jeu classique "Snake" développé sur Unity
 - **Bonus** : +1 Bonus de point quand pomme mangé durant cette event
 
 ## Auteur
-Rthimoth & Fyleeds
+Clément PENOT & Thimothee RANVIN
